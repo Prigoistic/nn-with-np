@@ -59,6 +59,33 @@ This is why NumPy is the foundation for almost all Python-based machine learning
 - **Backward Propagation:** Computes gradients using matrix operations and updates parameters in-place.
 - **One-hot Encoding:** Efficiently implemented with NumPy indexing.
 
+## Why Are Initializers Needed?
+
+When building neural networks, especially with frameworks like TensorFlow (see `tf-implementaion-of-dense-layer.ipynb`), **initializers** are used to set the starting values of weights and biases in each layer. Proper initialization is crucial for the following reasons:
+
+- **Breaking Symmetry:** If all weights are initialized to the same value (e.g., all zeros), every neuron in a layer will learn the same features during training. Random initialization ensures that each neuron can learn different features.
+
+- **Efficient Training:** Good initializers (like random normal or Xavier/He initialization) help gradients flow properly through the network, preventing issues like vanishing or exploding gradients. This leads to faster and more stable convergence during training.
+
+- **Bias Initialization:** Biases are often initialized to zeros, which is safe because they do not suffer from the symmetry problem.
+
+In the TensorFlow dense layer example, initializers are explicitly specified:
+
+```python
+self.W = self.add_weight(
+	shape=(input_dim, output_dim),
+	initializer="random_normal",
+	trainable=True
+)
+self.b = self.add_weight(
+	shape=(output_dim,),
+	initializer="zeros",
+	trainable=True
+)
+```
+
+This ensures that weights start with small random values and biases start at zero, providing a good starting point for learning. In NumPy-based implementations, similar logic is used with `np.random.randn` and `np.zeros`.
+
 Example (from code):
 
 ```python
